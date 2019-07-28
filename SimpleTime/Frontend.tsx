@@ -1,24 +1,31 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    TouchableHighlight,
+    Image
+} from 'react-native';
 import Backend from "./Backend";
-import * as Speech from "expo-speech";
 
-export default class SimpleTime extends React.Component {
-    public render(): any {
+export default class Frontend extends React.Component {
+    public render(): JSX.Element {
         return (
             <View style={styles.container}>
-                <Text style={styles.text}>{this.backend.simpleTime().toUpperCase()}</Text>
-                <View style={styles.spacer}></View>
-                <TouchableHighlight onPress={() => Speech.speak(this.backend.simpleTime())} underlayColor="white">
+                <Text style={[styles.text, styles.time]}>
+                    {this.backend.simpleTime()}
+                </Text>
+                <Image source={require("../assets/img/day.png")} style={{rotation: this.backend.sunAngle()}} />
+                <TouchableHighlight onPress={this.backend.saySimpleTime} underlayColor="white" activeOpacity={0.5}>
                     <View style={styles.button}>
-                        <Text style={styles.buttonText}>Say SimpleTime</Text>
+                        <Text style={styles.text}>Say SimpleTime</Text>
                     </View>
                 </TouchableHighlight>
             </View>
         );
     }
     
-    public componentDidMount(): void {
+    public async componentDidMount(): Promise<void> {
         this.interval = setInterval(() => {
             this.backend.update();
             this.forceUpdate();
@@ -29,7 +36,7 @@ export default class SimpleTime extends React.Component {
         clearInterval(this.interval);
     }
 
-    private interval: any;
+    private interval: number;
     private backend: Backend = new Backend();
 }
 
@@ -42,22 +49,22 @@ let styles: any = StyleSheet.create({
         justifyContent: "center"
     },
     text: {
-        backgroundColor: "white",
+        color: "black",
+        fontFamily: "monospace"
+    },
+    time: {
         fontSize: 40,
         flexWrap: "wrap",
+        textAlign: "center",
         marginLeft: 20,
         marginRight: 20,
-        textAlign: "center",
-        fontFamily: "monospace",
-        color: "hotpink"
-    },
-    spacer: {
-        marginTop: 50,
-        marginBottom: 50
+        marginBottom: 20
     },
     button: {
         backgroundColor: "lightgrey",
         padding: 20,
-        borderRadius: 5
+        borderRadius: 5,
+        elevation: 5,
+        marginTop: 20
     }
 });

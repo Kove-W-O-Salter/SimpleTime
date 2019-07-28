@@ -1,18 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import SimpleTime from "./SimpleTime/Frontend";
+import Frontend from "./SimpleTime/Frontend";
 
-export default function App() {
-  return (
-    <SimpleTime />
-  );
+
+export default class App extends React.Component {
+    public render(): JSX.Element {
+        console.disableYellowBox = true;
+        
+        return (
+            <Frontend />
+        );
+    }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

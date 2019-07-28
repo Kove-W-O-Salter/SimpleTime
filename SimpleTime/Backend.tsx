@@ -1,9 +1,15 @@
+import * as Speech from "expo-speech";
+
 export default class Backend {
-    constructor() {
+    public constructor() {
         this.update();
     }
 
-    public simpleTime(): string {
+    public saySimpleTime = (): void => {
+        Speech.speak(this.simpleTime());
+    }
+
+    public simpleTime = (): string => {
         let hours: string = this.showHours();
         let minutes: string = this.showMinutes();
         let result: string = "";
@@ -14,15 +20,69 @@ export default class Backend {
             result = `${minutes} ${hours}`;
         }
 
-        return result;
+        return result.toUpperCase();
     }
 
-    public update(): void {
+    public sunAngle = (): number => {
+        switch(this.sunLevel()) {
+            case "pre-morning":
+                return 180;
+            case "early-morning":
+                return 225;
+            case "morning":
+                return 270;
+            case "pre-noon":
+                return 315;
+            case "noon":
+                return 0;
+            case "post-noon":
+                return 45;
+            case "evening":
+                return 90;
+            case "post-evening":
+                return 135;
+        }
+    }
+
+    public sunLevel = (): string => {
+        let hours = this.approximateHours(false);
+
+        /**
+         * 0  - 1 : pre-morning      (1) 180
+         * 2  - 5 : early-morning    (3) 225
+         * 6  - 10: morning          (4) 270
+         * 10 - 11: pre-noon         (1) 315
+         * 12     : noon             (0) 0
+         * 13 - 14: post-noon        (1) 45
+         * 15 - 19: evening          (4) 90
+         * 20 - 23: post-evening     (3) 135
+         */
+
+        if(hours >= 0 && hours <= 1) {
+            return "pre-morning";
+        } else if(hours >= 2 && hours <= 5) {
+            return "early-morning";
+        } else if(hours >= 6 && hours <= 10) {
+            return "morning";
+        } else if(hours >= 10 && hours <= 11) {
+            return "pre-noon";
+        } else if(hours == 12) {
+            return "noon";
+        } else if(hours >= 13 && hours <= 14) {
+            return "post-noon";
+        } else if(hours >= 15 && hours <= 19) {
+            return "evening";
+        } else {
+            return "night";
+        }
+    }
+
+    public update = (): void => {
         this.date = new Date();
     }
 
     private showHours(): string {
-        let hours: number = this.approximateHours();
+        let hours: number = this.approximateHours(true);
         let result: string = "";
 
         switch(hours) {
@@ -67,16 +127,22 @@ export default class Backend {
         return result;
     }
 
-    private approximateHours(): number {
+    private approximateHours(wrap: boolean): number {
         let hours: number = this.date.getHours();
         let minutes: number = this.roundMinutes();
 
-        if((minutes >= 60) || (minutes >= 45)) {
+        if(minutes >= 45) {
             hours += 1;
         }
 
-        if(hours > 12) {
-            hours -= 12;
+        if(wrap) {
+            if(hours > 12) {
+                hours -= 12;
+            }
+        } else {
+            if(hours > 23) {
+                hours -= 23;
+            }
         }
 
         return hours;
