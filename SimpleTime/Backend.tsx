@@ -24,57 +24,37 @@ export default class Backend {
     }
 
     public sunAngle = (): number => {
-        switch(this.sunLevel()) {
-            case "pre-morning":
-                return 180;
-            case "early-morning":
-                return 225;
-            case "morning":
-                return 270;
-            case "pre-noon":
-                return 315;
-            case "noon":
-                return 0;
-            case "post-noon":
-                return 45;
-            case "evening":
-                return 90;
-            case "post-evening":
-                return 135;
+        let hours: number = this.date.getHours();
+        let result: number = 0;
+        let over: number = hours % 3;
+
+        hours -= over;
+
+        if(over >= 3 / 2) {
+            hours += 3;
         }
-    }
 
-    public sunLevel = (): string => {
-        let hours = this.approximateHours(false);
-
-        /**
-         * 0  - 1 : pre-morning      (1) 180
-         * 2  - 5 : early-morning    (3) 225
-         * 6  - 10: morning          (4) 270
-         * 10 - 11: pre-noon         (1) 315
-         * 12     : noon             (0) 0
-         * 13 - 14: post-noon        (1) 45
-         * 15 - 19: evening          (4) 90
-         * 20 - 23: post-evening     (3) 135
-         */
-
-        if(hours >= 0 && hours <= 1) {
-            return "pre-morning";
-        } else if(hours >= 2 && hours <= 5) {
-            return "early-morning";
-        } else if(hours >= 6 && hours <= 10) {
-            return "morning";
-        } else if(hours >= 10 && hours <= 11) {
-            return "pre-noon";
-        } else if(hours == 12) {
-            return "noon";
-        } else if(hours >= 13 && hours <= 14) {
-            return "post-noon";
-        } else if(hours >= 15 && hours <= 19) {
-            return "evening";
-        } else {
-            return "night";
+        switch(hours) {
+            case 12:
+                result = 0;
+                break;
+            case 15:
+                result = 45;
+                break;
+            case 18:
+                result = 90;
+                break;
+            case 0:
+                result = 180;
+                break;
+            case 3:
+                result = 225;
+                break;
+            case 6:
+                result = 270;
         }
+
+        return result;
     }
 
     public update = (): void => {
@@ -191,6 +171,14 @@ export default class Backend {
         }
 
         return minutes;
+    }
+    
+    private range(n: number, min: number, max: number): boolean {
+        if(max > min) {
+            return n <= max && n >= min;
+        } else {
+            return false;
+        }
     }
 
     private date: Date;

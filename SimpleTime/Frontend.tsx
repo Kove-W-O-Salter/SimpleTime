@@ -15,7 +15,7 @@ export default class Frontend extends React.Component {
                 <Text style={[styles.text, styles.time]}>
                     {this.backend.simpleTime()}
                 </Text>
-                <Image source={require("../assets/img/day.png")} style={{rotation: this.backend.sunAngle()}} />
+                <Image source={require("../assets/img/day.png")} style={{ transform: [{ rotateZ: `${this.backend.sunAngle()}deg` }] }} />
                 <TouchableHighlight onPress={this.backend.saySimpleTime} underlayColor="white" activeOpacity={0.5}>
                     <View style={styles.button}>
                         <Text style={styles.text}>Say SimpleTime</Text>
