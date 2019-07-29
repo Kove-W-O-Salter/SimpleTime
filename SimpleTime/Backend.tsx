@@ -1,4 +1,4 @@
-import * as Speech from "expo-speech";
+import { speak } from "expo-speech";
 
 export default class Backend {
     public constructor() {
@@ -6,7 +6,7 @@ export default class Backend {
     }
 
     public saySimpleTime = (): void => {
-        Speech.speak(this.simpleTime());
+        speak(this.simpleTime());
     }
 
     public simpleTime = (): string => {
