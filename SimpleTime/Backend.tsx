@@ -24,34 +24,14 @@ export default class Backend {
     }
 
     public sunAngle = (): number => {
-        let hours: number = this.date.getHours();
+        let hours: number = this.approximateHours(false);
+        let partition: number = 360 / 24;
         let result: number = 0;
-        let over: number = hours % 3;
 
-        hours -= over;
-
-        if(over >= 3 / 2) {
-            hours += 3;
-        }
-
-        switch(hours) {
-            case 12:
-                result = 0;
-                break;
-            case 15:
-                result = 45;
-                break;
-            case 18:
-                result = 90;
-                break;
-            case 0:
-                result = 180;
-                break;
-            case 3:
-                result = 225;
-                break;
-            case 6:
-                result = 270;
+        if(hours >= 12) {
+            result = (hours - 12) * partition;
+        } else {
+            result = 180 + hours * partition;
         }
 
         return result;
@@ -60,7 +40,7 @@ export default class Backend {
     public update = (): void => {
         this.date = new Date();
     }
-
+    
     private showHours(): string {
         let hours: number = this.approximateHours(true);
         let result: string = "";
@@ -171,14 +151,6 @@ export default class Backend {
         }
 
         return minutes;
-    }
-    
-    private range(n: number, min: number, max: number): boolean {
-        if(max > min) {
-            return n <= max && n >= min;
-        } else {
-            return false;
-        }
     }
 
     private date: Date;

@@ -16,7 +16,7 @@ export default class Frontend extends React.Component {
                     {this.backend.simpleTime()}
                 </Text>
                 <Image source={require("../assets/img/day.png")} style={{ transform: [{ rotateZ: `${this.backend.sunAngle()}deg` }] }} />
-                <TouchableHighlight onPress={this.backend.saySimpleTime} underlayColor="white" activeOpacity={0.5}>
+                <TouchableHighlight onPress={this.backend.saySimpleTime} underlayColor={"#ffffff"} activeOpacity={0.5}>
                     <View style={styles.button}>
                         <Text style={styles.text}>Say SimpleTime</Text>
                     </View>
@@ -46,7 +46,9 @@ let styles: any = StyleSheet.create({
         flexDirection: "column",
         backgroundColor: "white",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        color: "black",
+        fontFamily: "monospace"
     },
     text: {
         color: "black",
@@ -65,6 +67,7 @@ let styles: any = StyleSheet.create({
         padding: 20,
         borderRadius: 5,
         elevation: 5,
-        marginTop: 20
+        marginTop: 20,
+        fontFamily: "monospace"
     }
 });
