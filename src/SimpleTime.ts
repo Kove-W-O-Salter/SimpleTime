@@ -1,15 +1,15 @@
 import { speak } from "expo-speech";
 
-export default class Backend {
+export default class SimpleTime {
     public constructor() {
         this.update();
     }
 
     public saySimpleTime = (): void => {
-        speak(this.simpleTime());
+        speak(this.getSimpleTime());
     }
 
-    public simpleTime = (): string => {
+    public getSimpleTime = (): string => {
         let hours: string = this.showHours();
         let minutes: string = this.showMinutes();
         let result: string = "";
@@ -23,7 +23,7 @@ export default class Backend {
         return result.toUpperCase();
     }
 
-    public sunAngle = (): number => {
+    public getSunAngle = (): number => {
         let hours: number = this.approximateHours(false);
         let partition: number = 360 / 24;
         let result: number = 0;
@@ -42,10 +42,9 @@ export default class Backend {
     }
     
     private showHours(): string {
-        let hours: number = this.approximateHours(true);
         let result: string = "";
 
-        switch(hours) {
+        switch(this.approximateHours(true)) {
             case 1:
                 result = "one";
                 break;
@@ -109,10 +108,9 @@ export default class Backend {
     }
 
     private showMinutes(): string {
-        let minutes: number = this.roundMinutes();
         let result: string = "";
 
-        switch(minutes) {
+        switch(this.roundMinutes()) {
             case 0:
                 break;
             case 15:
@@ -144,9 +142,8 @@ export default class Backend {
 
     private approximateMinutes(): number {
         let minutes: number = this.date.getMinutes();
-        let seconds: number = this.date.getSeconds();
 
-        if(seconds >= 30) {
+        if(this.date.getSeconds() >= 30) {
             minutes += 1;
         }
 
