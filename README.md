@@ -20,9 +20,9 @@ expo build:android -t apk
 
 # Messing Around
 You can play with the source by editing the three main source files:
-* `SimpleTime/Frontend.tsx` -- the frontend (UI) written using `react-native`.
-* `SimpleTime/Backend.tsx` -- the backend.
-* `App.tsx` -- the main application.
+* `src/SimpleTime.ts` — the backend library for calculations involving SimpleTime.
+* `assets/styles/Styles.tsx` — the main stylesheet.
+* `App.tsx` — the main application.
 
 # Pull Requests
 Knock yourself out; if I don't like it I won't accept it so don't hesitate to through around ideas. Happy coding!
