@@ -23,7 +23,7 @@
       "**/*"
     ],
     "android": {
-      "package": "com.kovesalter.kovesalter"
+      "package": "com.kovesalter.kovesalter",
     }
   }
 }
